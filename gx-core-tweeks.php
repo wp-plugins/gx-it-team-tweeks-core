@@ -3,7 +3,7 @@
 Plugin Name: GX IT Core Tweeks 
 Plugin URI: http://getgx.com/wordpress-plugins/core_tweeks
 Description: This plugin is a plugin that will tweek your wordpress
-Version: 1.0
+Version: 2.0
 Author: Eucimar Raposo
 Author URI: http://eucimarraposo.com	
 License: GPLv2
