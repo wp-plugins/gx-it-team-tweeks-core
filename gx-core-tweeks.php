@@ -3,7 +3,7 @@
 Plugin Name: GX IT Core Tweeks 
 Plugin URI: http://getgx.com/wordpress-plugins/core_tweeks
 Description: This plugin is a plugin that will tweek your wordpress
-Version: 2.0
+Version: 1.0
 Author: Eucimar Raposo
 Author URI: http://eucimarraposo.com	
 License: GPLv2
@@ -65,16 +65,9 @@ function gx_it_core_tweeks_login_page()
 {
 	require_once(dirname(__FILE__).'/inc/login.php');
 }
-function gx_it_core_tweeks_unninstall()
+function gx_it_core_tweeks_uninstall_page()
 {
-	?>
-	<div class="wrap">
-	<?php screen_icon(); ?>
-	<h2>CC Comments Option Page</h2>
-	<p>Welcome to the CC Comments Plugin. Here you can edit the email(s) you wish to have your comments CC'd to.</p>
-	
-	</div>
-	<?php
+	require_once(dirname(__FILE__).'/inc/unninstall.php');
 }
 
 /*
