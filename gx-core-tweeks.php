@@ -3,7 +3,7 @@
 Plugin Name: GX IT Core Tweeks 
 Plugin URI: http://getgx.com/wordpress-plugins/core_tweeks
 Description: This plugin is a plugin that will tweek your wordpress
-Version: 2.0
+Version: 3.0
 Author: Eucimar Raposo
 Author URI: http://eucimarraposo.com	
 License: GPLv2
@@ -25,75 +25,86 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 
 
+/**
+* 
+* This function removes the wordpress version metatag
+*
+* Longer more detailed description
+*
+* @param type $varname1 Description
+* @param type $varname2 Description
+* @return type Description
+*/
+function gx_it_core_tweeks_install(){
 
-function gx_it_core_tweeks_activate(){
-//db create, create options
-	
 }
-register_activation_hook( __FILE__, 'gx_it_core_tweeks_activate');
+register_activation_hook( __FILE__, 'gx_it_core_tweeks_install');
 
+
+
+/**
+* 
+* This function removes the wordpress version metatag
+*
+* Longer more detailed description
+*
+* @param type $varname1 Description
+* @param type $varname2 Description
+* @return type Description
+*/
 function gx_it_core_tweeks_uninstall() {
 //do something
 }
 register_deactivation_hook( __FILE__, 'gx_it_core_tweeks_uninstall' );
 
+/**
+* 
+* This function removes the wordpress version metatag
+*
+* Longer more detailed description
+*
+* @param type $varname1 Description
+* @param type $varname2 Description
+* @return type Description
+*/
+function gx_it_core_tweeks_disable_version() { return ''; }
+add_filter('the_generator','gx_it_core_tweeks_disable_version');
+remove_action('wp_head', 'wp_generator');
 
-/*
- * create menu and submenu
- */
-function gx_it_core_tweeks_create_menu() {
 
-	//create custom top-level menu
-	add_menu_page( 'GXIT CORE', 'GXIT CORE', 'manage_options', __FILE__, 'gx_it_core_tweeks_general_page', plugins_url( '/images/gxit.png', __FILE__ ) );
-	
-	//create submenu items
-	add_submenu_page( __FILE__, 'General Plugin', 'General Settings', 'manage_options', 'gx-it-core-tweeks-general-menu', gx_it_core_tweeks_general_page);
-	add_submenu_page( __FILE__, 'Log me in', 'Log In', 'manage_options', 'gx-it-core-tweeks-login-page',gx_it_core_tweeks_login_page);
-	add_submenu_page( __FILE__, 'Uinstall My Plugin', 'Uninstall', 'manage_options', 'gx-it-core-tweeks-unninstall-menu', gx_it_core_tweeks_uninstall_page ); 
-
+function gx_it_core_tweeks_change_login_logo() { ?>    
+<?php }
+add_action( 'login_enqueue_scripts', 'gx_it_core_tweeks_change_login_logo' );
+function my_login_logo_url() {
+    return 'http://getgx.com' ;
 }
-add_action( 'admin_menu', 'gx_it_core_tweeks_create_menu' );
+add_filter( 'login_headerurl', 'my_login_logo_url' );
 
-function gx_it_core_tweeks_general_page()
-{
-	
-require_once(dirname(__FILE__).'/inc/general.php');
-	
+function my_login_logo_url_title() {
+    return 'GX IT';
 }
+add_filter( 'login_headerftitle', 'my_login_logo_url_title' );
 
-function gx_it_core_tweeks_login_page()
-{
-	require_once(dirname(__FILE__).'/inc/login.php');
+
+function gx_it_core_tweeks_change_login_stylesheet() { ?>
+    <link rel="stylesheet" id="custom_wp_admin_css"  href="<?php echo plugins_url('css/style-login.css',__FILE__); ?>" type="text/css" media="all" />
+<?php }
+add_action( 'login_enqueue_scripts', 'gx_it_core_tweeks_change_login_stylesheet' );
+
+// Simple Query String Login page protection
+/*function gx_it_core_tweeks_change_login_protection_for_login_page() {
+$qs = 'gxit';
+	if ( !isset($_GET['gxit-admin']) || strcmp($qs,$_GET['gxit-admin'])!=0 ) {			
+		header( 'Location: ' . home_url() . '/404.php' );
+	}
 }
-function gx_it_core_tweeks_uninstall_page()
-{
-	require_once(dirname(__FILE__).'/inc/unninstall.php');
+add_action('login_head', 'gx_it_core_tweeks_change_login_protection_for_login_page',1);
+*/
+
+function gx_it_core_tweeks_change_redirect_logout(){
+ wp_redirect( home_url() );  
 }
-
-/*
- * Send message when post is created
- */
-function gx_it_core_tweeks_notify_admin_when_p_created($post_id){
-	
-// If this is just a revision, don't send the email.
-	if ( wp_is_post_revision( $post_id ) )
-		return;
-
-	$post_title = get_the_title( $post_id );
-	$post_url = get_permalink( $post_id );
-	$subject = 'A post has been updated';
-
-	$message = "A post has been updated on your website:\n\n";
-	$message .= $post_title . ": " . $post_url;
-
-	// Send email to admin.
-	wp_mail( 'cimar007@hotmail.com', $subject, $message );
-	
-	  
-}
-
-add_action('save_post', 'gx_it_core_tweeks_notify_admin_when_p_created');
-
+add_action('wp_logout', 'gx_it_core_tweeks_change_redirect_logout',1); 
 
 
 ?>
